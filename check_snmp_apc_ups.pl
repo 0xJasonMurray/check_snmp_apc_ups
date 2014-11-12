@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+# nagios: -epn
+
 
 #    Copyright (C) 2004 Altinity Limited
 #    E: info@altinity.com    W: http://www.altinity.com/
@@ -25,6 +27,9 @@
 #    Output of snmp query for remaing battery runtime is in minutes or in hours. This
 #    is a problem when you want to create some nice graphs because of the different
 #    output. Now hours are converted to minutes.
+# 
+#    Updated 2014/11/11 by Jason E. Murray <jemurray@zweck.net>
+#       * Added temperature and load thresholds options
 #
 
 use Net::SNMP;
@@ -110,7 +115,7 @@ if (@ARGV < 1) {
      usage();
 }
 
-getopts("h:H:C:w:c:");
+getopts("h:H:C:w:c:L:T:");
 if ($opt_h){
     usage();
     exit(0);
@@ -126,6 +131,18 @@ if ($opt_C){
     $community = $opt_C;
 }
 else {
+}
+
+if ($opt_L) {
+    $loadMax = $opt_L;
+} else {
+    $loadMax = 90;
+}
+   
+if ($opt_T) {
+    $temperatureMax = $opt_T;
+} else {
+    $temperatureMax = 36;
 }
 
 
@@ -502,13 +519,17 @@ sub main {
         $issue = $issue . "BATTERY RUNNING LOW! ";
         $status = 2;
     }
-    if ($output_load > 90) {
+    if ($output_load > $loadMax) {
         $issue = $issue . "HIGH OUTPUT LOAD! ";
         $status = 2;
     }
     if ($battery_replace eq "2") {
         $issue = $issue . "REPLACE BATTERY! ";
         $status = 2; 
+    }
+    if ($battery_temperature > $temperatureMax) {
+        $issue = $issue . "HIGH TEMPERATURE! ";
+        $status = 1; 
     }
 
 
@@ -541,6 +562,8 @@ Usage: $script -H <hostname> -c <community> [...]
 
 Options: -H 	Hostname or IP address
          -C 	Community (default is public)
+         -L     UPS Load Max
+         -T     Temperature Max
 	 
 -----------------------------------------------------------------	 
 Copyright 2004 Altinity Limited	 
