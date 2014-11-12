@@ -60,9 +60,11 @@ Nagios plugin to monitor/report on APC UPS's for:
 ## Examples
 
 OK Result:
+
     jemurray@nagios:~$ /usr/lib/nagios/plugins/check_snmp_apc_ups.pl -H 192.168.6.34 -C public
     Status is OK - Smart-UPS RT 6000 XL - BATTERY:(capacity 100%, temperature 28 C, runtime 19 minutes, 00.00) INPUT:(voltage 213 V, frequency 60 Hz) OUTPUT:(voltage 208 V, frequency 60 Hz, load 46%) SELF TEST:(Passed on 10/31/2014) LAST EVENT:(UPS self test)|capacity=100%;50;25;0;100 load=46%;80;90;0;100 temp=28 runtime=19  iv=213 ov=208
 
 High Temp Warning:
+
     jemurray@nagios:~$ /usr/lib/nagios/plugins/check_snmp_apc_ups.pl -H 192.168.6.34 -C public -T 26
     Status is a WARNING level - HIGH TEMPERATURE!  - Smart-UPS RT 6000 XL - BATTERY:(capacity 100%, temperature 28 C, runtime 19 minutes, 00.00) INPUT:(voltage 214 V, frequency 60 Hz) OUTPUT:(voltage 207 V, frequency 60 Hz, load 45%)    LAST EVENT:UPS self test|capacity=100%;50;25;0;100 load=45%;80;90;0;100 temp=28 runtime=19  iv=214 ov=207
