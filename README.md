@@ -46,7 +46,9 @@ Nagios plugin to monitor/report on APC UPS's for:
     Usage: check_snmp_apcups -H <hostname> -c <community> [...]
 
     Options: -H     Hostname or IP address
-            -C     Community (default is public)
+             -C     Community (default is public)
+             -L     UPS Load Max
+             -T     Temperature Max
 
     -----------------------------------------------------------------
     Copyright 2004 Altinity Limited
